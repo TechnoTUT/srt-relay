@@ -1,0 +1,17 @@
+services:
+  srt:
+    build: .
+    container_name: srt
+    ports:
+      - 2000:2000/udp
+      - 5000:5000/udp
+    restart: unless-stopped
+    environment:
+      - RECEIVE_PORT=2000
+      - SEND_PORT=5000
+    secrets:
+      - passphrase
+
+secrets:
+  passphrase:
+    file: .passphrase

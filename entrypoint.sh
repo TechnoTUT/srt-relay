@@ -1,3 +1,14 @@
 #!/bin/bash
 PASSPHRASE=$(< /run/secrets/passphrase)
-/srt-1.5.3/_build/srt-live-transmit srt://:"$RECEIVE_PORT"?mode=listener&latency=100ms&passphrase=""&pbkeylen=32 srt://:"$SEND_PORT"?mode=listener&latency=100ms&passphrase="$PASSPHRASE"&pbkeylen=32
+
+if [ -z "$RECEIVE_PORT" ]; then
+  echo "Error: RECEIVE_PORT is not set."
+  exit 1
+fi
+
+if [ -z "$SEND_PORT" ]; then
+  echo "Error: SEND_PORT is not set."
+  exit 1
+fi
+
+ffmpeg -i "srt://0.0.0.0:${RECEIVE_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32" -fflags nobuffer -preset veryfast -tune zerolatency -vcodec copy -an -f mpegts "srt://0.0.0.0:${SEND_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32"

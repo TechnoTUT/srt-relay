@@ -1,17 +1,16 @@
 services:
-  srt:
-    build: .
-    container_name: srt
+  ffmpeg:
+    image: ghcr.io/technotut/srt-relay-server
+    container_name: ffmpeg
     ports:
-      - 2000:2000/udp
-      - 5000:5000/udp
+     - "2000:2000/udp"
+     - "3000:3000/udp"
     restart: unless-stopped
     environment:
-      - RECEIVE_PORT=2000
-      - SEND_PORT=5000
+     - RECEIVE_PORT=2000
+     - SEND_PORT=3000
     secrets:
       - passphrase
-
-secrets:
+secrets: 
   passphrase:
     file: .passphrase

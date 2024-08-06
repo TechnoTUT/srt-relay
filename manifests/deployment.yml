@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srt-relay-deployment
+  labels:
+    app: srt-relay-server
+  namespace: srt
+spec:
+  selector:
+    matchLabels:
+      app: srt-relay-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: srt-relay-server
+    spec:
+      containers:
+      - name: srt-relay-server
+        image: ghcr.io/technotut/srt-relay-server:main
+        ports:
+        - containerPort: 2000
+        - containerPort: 3000
+        env:
+          - name: RECEIVE_PORT
+            value: "2000"
+          - name: SEND_PORT
+            value: "3000"
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /run/secrets
+            readOnly: true
+      restartPolicy: Always
+      automountServiceAccountToken: false
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: secret-srt-relay-server

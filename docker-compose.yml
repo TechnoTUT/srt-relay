@@ -1,6 +1,6 @@
 services:
   ffmpeg:
-    image: ghcr.io/technotut/srt-relay-server
+    image: ghcr.io/technotut/srt-relay-server:main
     container_name: ffmpeg
     ports:
      - "2000:2000/udp"

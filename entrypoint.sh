@@ -11,4 +11,4 @@ if [ -z "$SEND_PORT" ]; then
   exit 1
 fi
 
-ffmpeg -i "srt://0.0.0.0:${RECEIVE_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32" -fflags nobuffer -preset veryfast -tune zerolatency -vcodec copy -an -f mpegts "srt://0.0.0.0:${SEND_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32"
+ffmpeg -i "srt://0.0.0.0:${RECEIVE_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32" -fflags nobuffer -preset veryfast -tune zerolatency -vcodec copy -f mpegts "srt://0.0.0.0:${SEND_PORT}?mode=listener&passphrase=${PASSPHRASE}&pbkeylen=32"
